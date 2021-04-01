@@ -1,14 +1,13 @@
 import { handleResult } from "./handlers";
-import { wordKeys, wordColors, isDark } from "./colors";
+import { words, isDark } from "./colors";
 
 const colorsEl = document.querySelector(".colors");
 
-function displayColors(words, colors) {
-  return words.map(
-      (w, c) =>
-       `<span class="colors ${w} ${
-        isDark(w) ? 'dark' : ''}" 
-        style="background: ${colors[c]};">${w}</span>`
+function displayColors(words) {
+  return Object.entries(words).map(
+    ([w, c]) =>
+      `<span class="colors ${w} ${isDark(w) ? 'dark' : ''}" 
+        style="background: ${c};">${w}</span>`
   ).join("");
 }
 
@@ -30,50 +29,14 @@ function start() {
   recognition.start();
 }
 
-start();
-colorsEl.innerHTML = displayColors(wordKeys, wordColors);
+navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(function (stream) {
+    console.log('You let me use your mic!')
+    start();
+  })
+  .catch(function (err) {
+    console.log('No mic for you!')
+  });
 
 
-function initDevices(midi) {
-  // Reset.
-  midiIn = [];
-  midiOut = [];
-  
-  // MIDI devices that send you data.
-  const inputs = midi.inputs.values();
-  for (let input = inputs.next(); input && !input.done; input = inputs.next()) {
-    midiIn.push(input.value);
-  }
-  
-
-  // MIDI devices that you send data to.
-  const outputs = midi.outputs.values();
-  for (let output = outputs.next(); output && !output.done; output = outputs.next()) {
-    midiOut.push(output.value);
-  }
-  
-  displayDevices();
-  startListening();
-}
-
-// Start listening to MIDI messages.
-function startListening() {
-  for (const input of midiIn) {
-    input.addEventListener('midimessage', midiMessageReceived);
-  }
-}
-
-function connect() {
-  navigator.requestMIDIAccess()
-  .then(
-    (midi) => midiReady(midi),
-    (err) => console.log('Something went wrong', err));
-}
-
-function midiReady(midi) {
-  // Also react to device changes.
-  midi.addEventListener('statechange', (event) => initDevices(event.target));
-  initDevices(midi); // see the next section!
-}
-
-connect();
+colorsEl.innerHTML = displayColors(words);

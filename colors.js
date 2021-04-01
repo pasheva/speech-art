@@ -36,12 +36,12 @@ export const words = {
   'hurry' : "#ECC30B",
   'wave' : "#F9DC5C",
   'gold' : "#FFF275",
-  'bank' : "#",
-  'day' : "#",
+  'bank' : "#181716",
+  'day' : "#162527",
   'this' : "#0000FF",
-  'just' : "#",
-  'makes' : "#",
-  'morning' : "#"
+  'just' : "#0678ae",
+  'makes' : "#ae7676",
+  'morning' : "#787456"
 };
 
 export function isDark(colorName) {
@@ -51,12 +51,6 @@ export function isDark(colorName) {
   const b = parseInt(hex.substring(4, 6), 16);
   return r * 0.299 + g * 0.587 + b * 0.114 < 120;
 }
-
-export const wordKeys = Object.keys(words).sort(
-  (a, b) => a.length - b.length
-);
-
-export const wordColors = Object.values(words);
 
 export function getCurrWord(){
     return currWord;
