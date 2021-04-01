@@ -14,7 +14,7 @@ jobs:
       - name : npm stuff
         run: |
           npm install
-          npm run build
+          npx parcel build index.html --no-cache --public-url "/speech-art"
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
